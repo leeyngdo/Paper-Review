@@ -1,12 +1,12 @@
 # A Simple Framework for Contrastive Learning of Visual Representations
 
 ## Abstract
-- This paper presents SimCLR: a simple framework for contrastive learning of visual representations.
+- This paper presents **SimCLR: a simple framework for contrastive learning of visual representations.**
   - Simplified proposed contrastive selfsupervised learning algorithms without requiring specialized architectures or a memory bank.
 - What enables the contrastive prediction tasks to learn useful representations?
-	- (1) Composition of data augmentations
-	- (2) Introduce a learnable nonlinear transformation 
-	- (3) Larger batch sizes and mor training steps
+	- **(1)** Composition of data augmentations
+	- **(2)** Introduce a learnable nonlinear transformation 
+	- **(3)** Larger batch sizes and mor training steps
 - By combining this, we can considerably outperform previous method for self-supervised & semi-supervied learning on ImageNet.
 <p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155086702-17a7af0f-5e85-4098-8caf-370860305411.png" width = "60%" height = "60%"></p>
 
@@ -27,9 +27,15 @@
 	- Not requiring neither specialized architectures nor a memory bank
 #### What enables good contrastive representation learning?
 - We systematically study the major components of our framework and show that:
-	- (1) Composition of multiple data augmentation operations
-	- (2) Learnable nonlinear transformation between the representation and the contrastive loss
-	- (3) Representation learning with contrastive cross entropy
+	- **(1)** Composition of multiple data augmentation operations
+	- **(2)** Learnable nonlinear transformation between the representation and the contrastive loss
+	- **(3)** Representation learning with contrastive cross entropy
 loss
-	- (4) Larger batch sizes and Longer training
-
+	- **(4)** Larger batch sizes and Longer training
+	
+## 2. Method
+#### 2.1 The Contrastive Learning Framework
+- SimCLR learns representations by maximizing agreement between differently augmented views of the same data example via a contrastive loss in the latent space.
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155092881-81285538-e766-40db-9f96-d7dc8ffb9312.png" width = "50%", heigth = "50%"></p>
+- (1) stochastic data augmentation module
+	- Transforms any given data randomly resulting in 2 correlated views of the same example, denoted 
