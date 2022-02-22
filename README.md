@@ -1,5 +1,9 @@
 # :pencil: Paper-Review 
 
+**Table of Contents**
+
+- [Self-Supervised Learning](#self-supervised-learning)
+
 ## **Self-Supervised Learning**
 
 |Review Date|Paper|Year|Links|Tag|
