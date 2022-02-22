@@ -1,5 +1,5 @@
 # A Simple Framework for Contrastive Learning of Visual Representations
-
+----------------------------------------------------------------------------------------------------------------------------------------------------
 **Table of Contents**
 
 * [Abstract](#abstract)
@@ -17,8 +17,10 @@
 * **4.** [Architectures for Encoder and Head](#4-architectures-for-encoder-and-head)
 	- **4.1.** [Unsupervised contrastive learning benefits (more)
 from bigger models](#41-unsupervised-contrastive-learning-benefits-more-from-bigger-models)
+	- **4.2.** [A nonlinear projection head improves the
+representation quality of the layer before it](#42-a-nonlinear-projection-head-improves-the-representation-quality-of-the-layer-before-it)
 
-
+----------------------------------------------------------------------------------------------------------------------------------------------------
 ## Abstract
 - This paper presents **SimCLR: a simple framework for contrastive learning of visual representations.**
   - Simplified proposed contrastive selfsupervised learning algorithms without requiring specialized architectures or a memory bank.
@@ -112,7 +114,7 @@ the contrastive prediction task on pairs of augmented examples derived from the 
 
 - Since ImageNet images are of different sizes(resolutions), we always apply crop and resize images 
 	- But makes it difficult to study other augmentations in the absence of cropping 
-	- Solution: asymmetric data transformation setting
+	- **Solution: asymmetric data transformation setting**
 		- always first randomly crop images and resize them to the same resolution, and we then apply the targeted transformation only to one branch of the framework while leaving the other branch
 as the identity (i.e. t(x) = x).
 		- It may hurts the performance. But this is suboptimal than applying augmentations to both branches, but sufficient for ablation.
@@ -129,6 +131,8 @@ as the identity (i.e. t(x) = x).
 #### 3.2. Contrastive learning needs stronger data augmentation than supervised learning
 - To further demonstrate the importance of the color augmentation, we adjust the strength.
 <p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155181864-db769f51-7ba8-47b3-9c71-6e4a74ef27c5.png" width = "50%" height = "50%"></p>
+
+
 - Stronger color augmentation improves the linear evaluation of the learned unsupervised models.
 	- AutoAugment(a sophisticated augmentation policy found using supervised learning) doesn't work better for unsupervised.
 	- Also stronger color augmentation does not improve or even hurts their performance.
@@ -136,4 +140,12 @@ as the identity (i.e. t(x) = x).
 
 ## 4. Architectures for Encoder and Head
 #### 4.1. Unsupervised contrastive learning benefits (more) from bigger models
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155204389-d2564806-1140-4c8a-adbd-909b922db050.png" width = "50%" height = "50%"></p>
 
+
+- Increasing depth and width both improve performance.
+	- Similar findings hold for supervised learning(He et al., 2016)
+	- But there is the gap between supervised models and linear classifiers trained on unsupervised models shrinks as the model size
+increases, suggesting that unsupervised learning benefits more from bigger models than its supervised counterpart.
+
+#### 4.2. A nonlinear projection head improves the representation quality of the layer before it
