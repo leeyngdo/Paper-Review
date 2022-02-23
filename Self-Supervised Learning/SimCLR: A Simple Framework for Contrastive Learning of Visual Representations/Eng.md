@@ -183,5 +183,7 @@ to predict the transformation applied during the pretraining.
 - Compared the NT-Xent loss against other commonly used contrastive loss. 
 <p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155272002-fa21d12c-6d07-4557-bfc6-3ef5d097a114.png" width = "50%" height = "50%"></p>
 
-- 1) l2 normalization (i.e. cosine similarity) along with temperature effectively weights different examples, and an appropriate temperature can help the model learn from hard negatives
+- 1) l2 normalization (i.e. cosine similarity) along with temperature effectively weights different examples.
+- 2) an appropriate temperature can help the model learn from hard negatives.
+	- More explanation: my github link
 #### 5.2. Contrastive learning benefits (more) from larger batch sizes and longer training
