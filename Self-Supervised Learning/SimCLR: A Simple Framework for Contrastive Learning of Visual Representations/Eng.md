@@ -24,6 +24,8 @@ representation quality of the layer before it**](#42-a-nonlinear-projection-head
 	- **5.1.** [**Normalized cross entropy loss with adjustable temperature works better than alternatives**](#51-normalized-cross-entropy-loss-with-adjustable-temperature-works-better-than-alternatives)
 	- **5.2.** [**Contrastive learning benefits (more) from larger batch sizes and longer training**](#52-contrastive-learning-benefits-more-from-larger-batch-sizes-and-longer-training)
 
+* **6.** [**Comparison with State-of-the-art**](#6-comparison-with-state-of-the-art)
+* **8.** [**Conclusion**](#8-conclusion)
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 ## Abstract
 - This paper presents **SimCLR: a simple framework for contrastive learning of visual representations.**
@@ -185,5 +187,22 @@ to predict the transformation applied during the pretraining.
 
 - 1) l2 normalization (i.e. cosine similarity) along with temperature effectively weights different examples.
 - 2) an appropriate temperature can help the model learn from hard negatives.
-	- More explanation: my github link
+	- [More explanation](https://github.com/leeyngdo/Paper-Review/blob/main/Self-Supervised%20Learning/SimCLR:%20A%20Simple%20Framework%20for%20Contrastive%20Learning%20of%20Visual%20Representations/Importance%20of%20Temperature.md)
+- 3) unlike cross-entropy, other functions do not weigh the negatives 
 #### 5.2. Contrastive learning benefits (more) from larger batch sizes and longer training
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155278807-2f91ee8f-a7b1-48bb-b979-eb5233916c9b.png" width = "50%" height = "50%"></p>
+
+- The impact of batch size when models are trained for different numbers of epochs.
+- With small training epochs, larger batch sizes have a significant advantage over the smaller ones.
+- With more training steps/epochs, the gaps between different batch sizes decrease or disappear when the batches are randomly resampled. 
+- In contrast to supervised learning, larger batch sizes provide more negative examples, facilitating convergence.
+	- Training longer provides more negative examples, improving the results. 
+
+## 6. Comparison with State-of-the-art
+#### 5.1. Normalized cross entropy loss with adjustable temperature works better than alternatives
+
+## 8. Conclusion
+- Present a simple framework and its instantiation for contrastive visual representation learning.
+- Carefully study its components, and show the effects of different design choices. 
+- By combining findings, we improve considerably over previous methods for selfsupervised, semi-supervised, and transfer learning.
+- This approach differs from standard supervised learning on ImageNet only in the choice of data augmentation, the use of a nonlinear head at the end of the network, and the loss function.
