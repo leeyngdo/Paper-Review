@@ -2,23 +2,27 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 **Table of Contents**
 
-* [Abstract](#abstract)
+* [**Abstract**](#abstract)
 
-* **1.** [Introduction](#1-introduction)
+* **1.** [**Introduction**](#1-introduction)
 
-* **2.** [Method](#2-method)
-	- **2.1.** [The Contrastive Learning Framework](#21-the-contrastive-learning-framework)
-	- **2.2.** [Training with Large Batch Size](#22-Training-with-Large-Batch-Size)
+* **2.** [**Method**](#2-method)
+	- **2.1.** [**The Contrastive Learning Framework**](#21-the-contrastive-learning-framework)
+	- **2.2.** [**Training with Large Batch Size**](#22-Training-with-Large-Batch-Size)
 
-* **3.** [Data Augmentation for Contrastive Representation Learning](#3-data-augmentation-for-contrastive-representation-learning)
-	- **3.1.** [Composition of data augmentation operations is crucial for learning good representations](#31-composition-of-data-augmentation-operations-is-crucial-for-learning-good-representations)
-	- **3.2.** [Contrastive learning needs stronger data augmentation than supervised learning](#32-contrastive-learning-needs-stronger-data-augmentation-than-supervised-learning)
+* **3.** [**Data Augmentation for Contrastive Representation Learning**](#3-data-augmentation-for-contrastive-representation-learning)
+	- **3.1.** [**Composition of data augmentation operations is crucial for learning good representations**](#31-composition-of-data-augmentation-operations-is-crucial-for-learning-good-representations)
+	- **3.2.** [**Contrastive learning needs stronger data augmentation than supervised learning**](#32-contrastive-learning-needs-stronger-data-augmentation-than-supervised-learning)
 
-* **4.** [Architectures for Encoder and Head](#4-architectures-for-encoder-and-head)
-	- **4.1.** [Unsupervised contrastive learning benefits (more)
-from bigger models](#41-unsupervised-contrastive-learning-benefits-more-from-bigger-models)
-	- **4.2.** [A nonlinear projection head improves the
-representation quality of the layer before it](#42-a-nonlinear-projection-head-improves-the-representation-quality-of-the-layer-before-it)
+* **4.** [**Architectures for Encoder and Head**](#4-architectures-for-encoder-and-head)
+	- **4.1.** [**Unsupervised contrastive learning benefits (more)
+from bigger models**](#41-unsupervised-contrastive-learning-benefits-more-from-bigger-models)
+	- **4.2.** [**A nonlinear projection head improves the
+representation quality of the layer before it**](#42-a-nonlinear-projection-head-improves-the-representation-quality-of-the-layer-before-it)
+
+* **5.** [**Loss Functions and Batch Size**](#5-loss-functions-and-batch-size)
+	- **5.1.** [**Normalized cross entropy loss with adjustable temperature works better than alternatives**](#51-normalized-cross-entropy-loss-with-adjustable-temperature-works-better-than-alternatives)
+	- **5.2.** [**Contrastive learning benefits (more) from larger batch sizes and longer training**](#52-contrastive-learning-benefits-more-from-larger-batch-sizes-and-longer-training)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
 ## Abstract
@@ -82,7 +86,7 @@ the contrastive prediction task on pairs of augmented examples derived from the 
 	- We don't sample negative examples explicitly.
 	- We treat the other 2(N − 1) augmented examples within a minibatch as negative examples.
 	- Define the **similarity function** <img src = "https://user-images.githubusercontent.com/88715406/155163850-f7b528e9-1b3d-4aaa-bd64-0711fb71b50f.png" width = "20%" height = "20%">
-	- **Loss function** <img src = "https://user-images.githubusercontent.com/88715406/155164228-4cfafb2e-05e7-45c0-a170-4b247ae26c7d.png" width = "20%" height = "20%">
+	- **Loss function(NT-Xent)** <img src = "https://user-images.githubusercontent.com/88715406/155164228-4cfafb2e-05e7-45c0-a170-4b247ae26c7d.png" width = "20%" height = "20%">
 <p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155164718-88ab1847-0ae4-4871-b7e3-96627ec25a09.png" width = "40%" height = "40%"></p>
 
 #### 2.2. Training with Large Batch Size
@@ -149,3 +153,35 @@ as the identity (i.e. t(x) = x).
 increases, suggesting that unsupervised learning benefits more from bigger models than its supervised counterpart.
 
 #### 4.2. A nonlinear projection head improves the representation quality of the layer before it
+
+- Study the importance of a projection head *g(h)* <p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155269123-da93eaa6-f4f7-41d3-9f04-bcdac761b4a8.png" width = "50%" height = "50%"></p>
+
+- Used 
+	- Identity(No projection)
+	- Linear projection (as used by several previous approaches)
+	- Default nonlinear projection with one additional hidden layer (and ReLU activation)
+
+**- Results: Nonlinear > Linear > Identity** 
+	- similar results observed regardless of output dimension 
+- Also, the layer before the nonlinear projection head ***h*** is still much better than the layer after ***z = g(h)***.
+	- **The hidden layer before the projection head is a better representation than the layer after.**
+
+- So, use the representation before the nonlinear projection. 
+	- due to loss of info induced by contrastive loss. 
+	- ***z = g(h)*** is trained to be invariant to data transformation.
+	- So it can remove information that may be useful for the downstream task e.g. color, orientation of objects
+
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155270511-afa1f9a6-48f4-4f90-9567-3dd5364ab569.png" width = "50%" height = "50%"></p>
+
+- Experiments that use either ***h*** or ***g(h)*** to learn
+to predict the transformation applied during the pretraining.
+	- Set <img src = "https://user-images.githubusercontent.com/88715406/155161674-1efd9eb6-2332-45db-8c1b-281ba4ce3368.png" width = "20%" height = "20%">, with the same input and output dimenstionality.
+**- h contains much more info about the transformation applied, while g(h) loses info!**
+
+## 5. Loss Functions and Batch Size
+#### 5.1. Normalized cross entropy loss with adjustable temperature works better than alternatives
+- Compared the NT-Xent loss against other commonly used contrastive loss. 
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155272002-fa21d12c-6d07-4557-bfc6-3ef5d097a114.png" width = "50%" height = "50%"></p>
+
+- 1) l2 normalization (i.e. cosine similarity) along with temperature effectively weights different examples, and an appropriate temperature can help the model learn from hard negatives
+#### 5.2. Contrastive learning benefits (more) from larger batch sizes and longer training
