@@ -199,7 +199,22 @@ to predict the transformation applied during the pretraining.
 	- Training longer provides more negative examples, improving the results. 
 
 ## 6. Comparison with State-of-the-art
-#### 5.1. Normalized cross entropy loss with adjustable temperature works better than alternatives
+#### Linear Evaluation
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155278807-2f91ee8f-a7b1-48bb-b979-eb5233916c9b.png" width = "50%" height = "50%"></p>
+
+- Compare with previous approach in the linear evalution setting.
+
+#### Semi-Supervised learning
+- Sample 1% or 10% of the labeled ILSVRC-12 training datasets in a class-balanced way (∼12.8 and ∼128 images per class respectively). 
+- Fine-tune the whole base network on the labeled data without regularization. 
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155283918-c44c8bd2-3c02-4640-80db-daff630e8fa2.png" width = "50%" height = "50%"></p>
+
+- Comparisons of results againt recent methods.
+
+#### Transfer Learning
+- Evaluate transfer learning performance across 12 natural image datasets in both linear evaluation (fixed feature extractor) and fine-tuning settings.
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155284225-a03bd989-303b-4c82-b536-1c2dca31ff94.png" width = "50%" height = "50%"></p>
+
 
 ## 8. Conclusion
 - Present a simple framework and its instantiation for contrastive visual representation learning.
