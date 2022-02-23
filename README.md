@@ -11,6 +11,7 @@
 |`~`|ResNet: Deep Residual Learning for Image Recognition|2015|[[Paper]](https://arxiv.org/abs/1512.03385)<br/>[[Review]]()|[[Implementation]]()|`ImageNet`, `Architecture`|
 
 
+
 ## **Self-Supervised Learning**
 
 |Review Date|Paper|Year|Links|Note|Tag|
