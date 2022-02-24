@@ -12,7 +12,7 @@
   - **3.3.** [**Network Architecture**](#33-network-architectures)
   - **3.4.** [**Implementation**](#34-implementation)
 * **4.** [**Experiments**](#4-experiments)
-	- **4.1.** [**ImageNet Classification**](#41-unsupervised-contrastive-learning-benefits-more-from-bigger-models)
+	- **4.1.** [**ImageNet Classification**](#41-imagenet-classification)
 	- **4.2.** [**CIFAR-10 and Analysis**](#42-cifar-10-and-analysis)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -116,12 +116,57 @@ by the number of stacked layers (depth).
 <p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155338853-0f3c484d-46e8-4128-8939-ec10f8b31f3e.png" width = "40%" height = "40%"></p>
 
 #### 3.4. Implementation
-- Scale Augmentation : random resize with its shorter side in 256 ~ 480
-- Color Augmentation : used in AlexNet
-- Batch Normalization : right after each Conv Layer & before activation
-- Weights Initialization
-- SGD : with a mini-Batch 256
-- Learning Rate : starts from 0.1 and is divided by 10 when the error plateaus
-- Iteration : 60 x 10^4
-- Decay & Momentum : 0.0001, 0.9
-- No Dropout 
+- **Scale Augmentation**: random resize with its shorter side in 256 ~ 480
+- **Color Augmentation** : used in AlexNet
+- **Batch Normalization** : right after each Conv Layer & before activation
+- **Weights Initialization**
+- **SGD** : with a mini-Batch 256
+- **Learning Rate** : starts from 0.1 and is divided by 10 when the error plateaus
+- **Iteration** : 60 x 10^4
+- **Weight Decay & Momentum** : 0.0001, 0.9
+- **No Dropout** 
+
+## 4. Experiments
+#### 4.1 ImageNet Classification
+- Evaluate 18-layer & 34-layer of plain networks and residual networks
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155469122-ea061168-c25f-4d32-ba62-1a5416dff409.png" width = "40%" height = "40%"></p>
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155469261-29796ebb-9d16-45af-bfb1-6c227757b410.png" width = "80%" height = "80%"></p>
+
+
+- In plain net case, we can observe the degradation problem.
+
+- This optimization difficulty is unlikely to be caused by vanishing gradients.
+	- These networks are trained with BN, which ensures forward propagated signals to have non-zero variances.
+	
+	- The backward propagated gradients exhibit healthy norms with BN.
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155470618-5310cfbe-fdb7-4d75-8f43-1e034e16e5f8.png" width = "40%" height = "40%"></p>
+
+
+- Table 3 suggests that the solver works to some extent as the 34-layer plain net is still able to achieve competitive accuracy. 
+	- **The deep plain nets may have exponentially low convergence rates.**
+
+- In residual network case, 3 major observations
+	- 1) 34-layer > 18-layer (degradation well addressed)
+	- 2) Reduced the top-1 error 
+	- 3) Resnet converges faster at the early stage
+
+#### Identity *vs.* Projection Shortcuts
+- 3 options for shortcuts (Table 3) 
+	- **A.** Increasing Dimension with **zero-paddings**; otherwise identity
+	- **B.** Increasing Dimension with **projection shortcuts**; otherwise identity
+	- **C.** All shorcuts are projections
+
+- better than the plain network
+	- B > A
+		- zero-padded dimensions in A indeed have no residual learning. (값이 그냥 0이기 때문에)
+	- C > B
+		- The extra parameters introduced by many projection shortcuts.
+	- But the small difference among A, B, C show tha projection shortcuts are not essential for addressing the degradation. So it is suffices to use identity shortcut. 
+
+#### Deeper Bottleneck Architectures
+- In basic block, if the layer deepens to more than 50, the computational efficiency is not good.
+<p align="center"><img src = "https://user-images.githubusercontent.com/88715406/155478047-7a299a9d-fd5f-4021-81f7-c5785e868c8c.png" width = "40%" height = "40%"></p>
+
+
+- 1X1 Conv Layer are responsible for reducing and then increasing dimensions. (https://hwiyong.tistory.com/45)
+- 
