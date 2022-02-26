@@ -169,4 +169,5 @@ by the number of stacked layers (depth).
 
 
 - 1X1 Conv Layer are responsible for reducing and then increasing dimensions. (https://hwiyong.tistory.com/45)
-- 
+- The parameter-free identity shortcuts are particularly important for the bottleneck architectures.
+	- If it is replaced with projection, time complexity & model size are doubled as the shortcut is connected to the 2 high-dimensional ends.
