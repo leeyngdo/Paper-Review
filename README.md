@@ -8,7 +8,7 @@
 
 |Review Date|Paper|Year|Links|Note|Tag|
 |------|---|---|---|---|---|
-|`~`|ResNet: Deep Residual Learning for Image Recognition|2015|[[Paper]](https://arxiv.org/abs/1512.03385)<br/>[[Review]]()|[[Implementation]]()|`ImageNet`, `Architecture`|
+|`2022/02/23`|ResNet: Deep Residual Learning for Image Recognition|2015|[[Paper]](https://arxiv.org/abs/1512.03385)<br/>[[Review]](https://github.com/leeyngdo/Paper-Review/blob/main/Architecture/ResNet:%20Deep%20Residual%20Learning%20for%20Image%20Recognition/Eng.md)|[[Implementation]]()|`ImageNet`, `Architecture`|
 
 
 
